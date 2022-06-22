@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
+    <RecipePreviewList title="Randome Recipes" random="true" class="RandomRecipes center" />
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
     {{ !$root.store.username }}
     <RecipePreviewList
       title="Last Viewed Recipes"
+      random="false"
       :class="{
         RandomRecipes: true,
         blur: !$root.store.username,
@@ -26,6 +27,9 @@ import RecipePreviewList from "../components/RecipePreviewList";
 export default {
   components: {
     RecipePreviewList
+  },
+  mounted(){
+    // console.log(this.$root.store.login)
   }
 };
 </script>

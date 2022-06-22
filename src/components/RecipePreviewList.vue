@@ -23,11 +23,17 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    random:{
+      type: String,
+      required: true
     }
   },
   data() {
     return {
-      recipes: []
+      recipes: [],
+      randomReq:"recipes/getRandomRecipes",
+      lastWatchedReq:"users/threelastWatched"
     };
   },
   mounted() {
@@ -36,13 +42,20 @@ export default {
   methods: {
     async updateRecipes() {
       try {
+        let url = "http://127.0.0.1:3000/"
+        if(this.random== "true"){url += this.randomReq}
+        else{url+= this.lastWatchedReq}
         const response = await this.axios.get(
-          this.$root.store.server_domain + "/recipes/random",
+          // this.$root.store.state.server_domain + "/recipes/getRandomRecipes",
+          url
           // "https://test-for-3-2.herokuapp.com/recipes/random"
         );
 
         // console.log(response);
-        const recipes = response.data.recipes;
+        const d = response.data;
+        let recipes;
+        if(this.random == "true"){recipes = d.message}
+        else{recipes=d}
         this.recipes = [];
         this.recipes.push(...recipes);
         // console.log(this.recipes);

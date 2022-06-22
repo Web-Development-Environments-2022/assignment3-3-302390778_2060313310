@@ -14,10 +14,13 @@
       </span>
     </div>
     <router-view />
+    <!-- <MainPage></MainPage> -->
+    blablabla
   </div>
 </template>
 
 <script>
+// import MainPage from "./pages/MainPage.vue"
 export default {
   name: "App",
   methods: {
@@ -29,7 +32,10 @@ export default {
         this.$forceUpdate();
       });
     }
-  }
+  },
+  // components: {
+  //   MainPage
+  // }
 };
 </script>
 

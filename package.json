@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "main": "vue-cli-service build main.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
