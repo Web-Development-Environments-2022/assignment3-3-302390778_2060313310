@@ -29,7 +29,6 @@ import RecipePreviewList from "../components/RecipePreviewList";
     },
     methods: {
     search() {
-      this.show=false
       if (this.query != ""){
         this.show=true;
         this.searchKey++;

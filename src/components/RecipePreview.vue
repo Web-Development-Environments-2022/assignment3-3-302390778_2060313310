@@ -8,11 +8,27 @@
     </div>
     <div class="recipe-footer">
       <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
+        <div v-if="recipe.wasWatchedByUserBefore">
+          <div id="wachtedRecipe">
+            {{ recipe.title }}
+          </div>
+        </div>
+        <div v-else>
+          {{ recipe.title }}
+        </div>
       </div>
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li>{{ recipe.aggregateLikes }} likes</li>
+        <div v-if="recipe.vegan">
+        <li>vegan</li>
+        </div>
+        <div v-if="recipe.vegetarian">
+        <li>vegetarian</li>
+        </div>
+        <div v-if="recipe.glutenFree">
+        <li>gluten Free</li>
+        </div>
       </ul>
     </div>
   </router-link>
@@ -137,5 +153,8 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
+}
+#wachtedRecipe{
+  color: blueviolet;
 }
 </style>

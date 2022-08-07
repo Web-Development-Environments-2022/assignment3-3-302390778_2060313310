@@ -69,8 +69,11 @@ export default {
                 query:this.query}}
           );
         }
-        console.log(url);
-        console.log(this.query)
+        console.log(response)
+        if(response == null){
+          this.recipes = [];
+          return
+        }
         const d = response.data;
         let recipes;
         if(this.random == "true" || this.random == "search"){recipes = d.message}
