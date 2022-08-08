@@ -14,15 +14,15 @@
       </span>
     </div>
     <router-view />
-    <!-- <MainPage></MainPage> -->
-    blablabla
+    <MainPage></MainPage>
+    blablablakkkkkkkkk
   </div>
 </template>
 
 <script>
-// import MainPage from "./pages/MainPage.vue"
+import MainPage from "./pages/MainPage.vue"
 export default {
-  name: "App",
+  name: "app",
   methods: {
     Logout() {
       this.$root.store.logout();
@@ -33,9 +33,9 @@ export default {
       });
     }
   },
-  // components: {
-  //   MainPage
-  // }
+  components: {
+    MainPage
+  }
 };
 </script>
 
