@@ -1,23 +1,44 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      <span v-if="!$root.store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
-      </span>
-      <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-      </span>
-    </div>
+      <div id="nav">
+        <b-row>
+          <b-col>
+            Logo
+          </b-col>
+          <b-col>
+            <router-link :to="{ name: 'main' }">Home</router-link>
+          </b-col>
+          <b-col>
+            <router-link :to="{ name: 'search' }">Search</router-link> 
+          </b-col>
+          <b-col>
+            <router-link :to="{ name: 'about' }">About</router-link>
+          </b-col>
+          <b-col>
+            <router-link :to="{ name: 'register' }" v-if="!$root.store.username">Register</router-link> 
+          </b-col>
+          <b-col>
+            <router-link :to="{ name: 'login' }" v-if="!$root.store.username">Login</router-link>
+          </b-col>
+          <b-col>
+            <button @click="Logout" :disabled="!$root.store.username">Logout</button> 
+          </b-col>
+          <div>
+            <b-dropdown v-if="$root.store.username" id="dropdown-1" text="Private zone" class="drop-down">
+            <!-- TODO: need to handle the rights links -->
+             <b-dropdown-item :to="{ name: 'favorite' }">Favorites rcipes</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'private' }">Private rcipes</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'family' }">Family rcipes</b-dropdown-item>
+            </b-dropdown>
+          </div>
+        </b-row>
+      </div>
     <router-view />
   </div>
 </template>
 
 <script>
-// import MainPage from "./pages/MainPage.vue"
+// import { ref } from 'vue';
 export default {
   name: "app",
   methods: {
@@ -29,9 +50,6 @@ export default {
         this.$forceUpdate();
       });
     }
-  },
-  components: {
-
   }
 };
 </script>
@@ -59,4 +77,5 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
 </style>

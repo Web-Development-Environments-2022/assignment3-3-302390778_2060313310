@@ -1,9 +1,10 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
+    <h2 v-if="!$root.store.username">Hello guest</h2>
+    <h2 v-else>Hello {{ $root.store.username }}</h2>
     <RecipePreviewList title="Random Recipes" random="true" class="RandomRecipes center"/>
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-    {{ $root.store.username }}
     <RecipePreviewList
       title="Last Viewed Recipes"
       random="false"
@@ -12,8 +13,8 @@
         blur: !$root.store.username,
         center: true
       }"
-      disabled
-    ></RecipePreviewList>
+      disabled>
+    </RecipePreviewList>
     <!-- <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >

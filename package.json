@@ -12,6 +12,7 @@
     "bootstrap-checkbox": "^2.0.0",
     "bootstrap-vue": "^2.15.0",
     "core-js": "^3.6.5",
+    "mdb-vue-ui-kit": "^2.0.0",
     "sass": "^1.50.0",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",

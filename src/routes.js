@@ -18,6 +18,11 @@ const routes = [
     component: () => import("./pages/LoginPage"),
   },
   {
+    path: "/about",
+    name: "about",
+    component: () => import("./pages/AboutPage"),
+  },
+  {
     path: "/search",
     name: "search",
     component: () => import("./pages/SearchPage"),
@@ -26,6 +31,21 @@ const routes = [
     path: "/recipe/:recipeId",
     name: "recipe",
     component: () => import("./pages/RecipeViewPage"),
+  },
+  {
+    path: "/users/familyRecipes",
+    name: "family",
+    component: () => import("./pages/FamilyPage"),
+  },
+  {
+    path: "/users/getFavorites",
+    name: "favorite",
+    component: () => import("./pages/FavoritesPage"),
+  },
+  {
+    path: "/users/getUserRecipe",
+    name: "private",
+    component: () => import("./pages/PrivatePage"),
   },
   {
     path: "*",
