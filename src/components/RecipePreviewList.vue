@@ -4,11 +4,20 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
+    <div v-if="this.random == 'search'">
+        <b-col v-for="r in recipes" :key="r.id">
+          <div>
+            <RecipePreview class="recipePreview" :recipe="r" />
+          </div>
       </b-col>
-    </b-row>
+    </div>
+    <div v-else>
+      <b-row>
+        <b-col v-for="r in recipes" :key="r.id">
+          <RecipePreview class="recipePreview" :recipe="r" />
+        </b-col>
+      </b-row>
+    </div>
   </b-container>
 </template>
 
@@ -32,6 +41,26 @@ export default {
     query: {
       type:String,
       required:false
+    },
+    searchAmount: {
+      type:String,
+      required:false
+    },
+    searchSort: {
+      type:String,
+      required:false
+    },
+    searchCuisine: {
+      type:String,
+      required:false
+    },
+    searchDiet: {
+      type:String,
+      required:false
+    },
+    searchIntol: {
+      type:String,
+      required:false
     }
   },
   data() {
@@ -44,6 +73,11 @@ export default {
   },
   mounted() {
     this.updateRecipes();
+    // this.searchAmount = 5
+    // this.searchCuisine = ""
+    // this.searchDiet = ""
+    // this.searchIntol = ""
+    // this.searchSort = null
   },
   methods: {
     async updateRecipes() {
@@ -62,11 +96,17 @@ export default {
           );
         }
         else{
+          console.log(this.searchAmount)
             response = await this.axios.get(
             url,
             {
               params:{
-                query:this.query}}
+                query:this.query,
+                cuisine: this.searchCuisine,
+                intolerances: this.searchIntol,
+                diet: this.searchDiet,
+                amount: this.searchAmount
+                }}
           );
         }
         console.log(response)

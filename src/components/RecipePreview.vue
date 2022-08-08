@@ -3,34 +3,54 @@
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview"
   >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
+  <!-- try 1 -->
+  <div class="card" style="width: 18rem;">
+    <img v-if="image_load" :src="recipe.image" class="recipe-image">
+    <div class="card-body">
+      <h5 :title="recipe.title" class="recipe-title" >{{recipe.title}}</h5>
     </div>
-    <div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        <div v-if="recipe.wasWatchedByUserBefore">
-          <div id="wachtedRecipe">
-            {{ recipe.title }}
-          </div>
-        </div>
-        <div v-else>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">{{ recipe.readyInMinutes }} minutes</li>
+      <li class="list-group-item">{{ recipe.aggregateLikes }} likes</li>
+      <li v-if="recipe.vegan" class="list-group-item">vegan</li>
+      <li v-if="recipe.vegetarian" class="list-group-item">vegetarian</li>
+      <li v-if="recipe.glutenFree" class="list-group-item">gluten Free</li>
+    </ul>
+    <!-- <div class="card-body">
+      <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a>
+    </div> -->
+  </div>
+  <!--  -->
+  <!-- <div class="recipe-body">
+      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
+  </div>
+  <br>
+  <div class="recipe-footer">
+    <div :title="recipe.title" class="recipe-title">
+      <div v-if="recipe.wasWatchedByUserBefore">
+        <div id="wachtedRecipe">
           {{ recipe.title }}
         </div>
       </div>
-      <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
-        <div v-if="recipe.vegan">
-        <li>vegan</li>
-        </div>
-        <div v-if="recipe.vegetarian">
-        <li>vegetarian</li>
-        </div>
-        <div v-if="recipe.glutenFree">
-        <li>gluten Free</li>
-        </div>
-      </ul>
+      <div v-else>
+        {{ recipe.title }}
+      </div>
     </div>
+    <ul class="recipe-overview">
+      <li>{{ recipe.readyInMinutes }} minutes</li>
+      <li>{{ recipe.aggregateLikes }} likes</li>
+      <div v-if="recipe.vegan">
+      <li>vegan</li>
+      </div>
+      <div v-if="recipe.vegetarian">
+      <li>vegetarian</li>
+      </div>
+      <div v-if="recipe.glutenFree">
+      <li>gluten Free</li>
+      </div>
+    </ul>
+  </div> -->
   </router-link>
 </template>
 
@@ -96,8 +116,8 @@ export default {
 .recipe-preview .recipe-body .recipe-image {
   margin-left: auto;
   margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-top: 1000px;
+  margin-bottom: 300px;
   display: block;
   width: 98%;
   height: auto;
@@ -150,7 +170,7 @@ export default {
   box-flex: 1;
   -webkit-flex-grow: 1;
   flex-grow: 1;
-  width: 90px;
+  width: 20px;
   display: table-cell;
   text-align: center;
 }
