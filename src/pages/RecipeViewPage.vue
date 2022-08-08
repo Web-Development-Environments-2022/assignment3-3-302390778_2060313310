@@ -3,6 +3,7 @@
     <div v-if="recipe">
       <div class="recipe-header mt-3 mb-4">
         <h1>{{ recipe.title }}</h1>
+        <!-- <img :src="recipe.image" class="center" /> -->
         <img :src="recipe.image" class="center" />
       </div>
       <div class="recipe-body">
@@ -10,7 +11,16 @@
           <div class="wrapped">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Likes: {{ recipe.aggregateLikes }}</div>
+              <div v-if="recipe.vegan">
+                vegan
+              </div>
+              <div v-if="recipe.vegetarian">
+                vegetarian
+              </div>
+              <div v-if="recipe.glutenFree">
+                gluten Free
+              </div>
             </div>
             Ingredients:
             <ul>
@@ -28,6 +38,7 @@
               <li v-for="s in recipe._instructions" :key="s.number">
                 {{ s.step }}
               </li>
+              <!-- {{ recipe.instructions }} -->
             </ol>
           </div>
         </div>
@@ -43,9 +54,15 @@
 
 <script>
 export default {
+  // mounted() {
+  //   this.axios.get(this.recipe.image).then((i) => {
+  //     this.image_load = true;
+  //   });
+  // },
   data() {
     return {
       recipe: null
+      // image_load: false
     };
   },
   async created() {
@@ -57,20 +74,17 @@ export default {
         response = await this.axios.get(
           // "https://test-for-3-2.herokuapp.com/recipes/info",
           //this.$root.store.state.server_domain + "/recipes/getRecipeDescription/",
-          "http://localhost:3000/recipes/getRecipeDescription/",
+          "http://localhost:3000/recipes/getRecipeFromClick",
           {
-            params: { id: this.$route.params.recipeId }
+            params: { recipeId: this.$route.params.recipeId }
           }
         );
-
-        // console.log("response.status", response.status);
         if (response.status !== 200) this.$router.replace("/NotFound");
       } catch (error) {
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");
         return;
       }
-
       let {
         analyzedInstructions,
         instructions,
@@ -78,8 +92,12 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
-      } = response.data.recipe;
+        title,
+        glutenFree,
+        vegetarian,
+        vegan
+      } = response.data.message;
+            console.log(response.data.message)
 
       let _instructions = analyzedInstructions
         .map((fstep) => {
@@ -96,7 +114,10 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        glutenFree,
+        vegetarian,
+        vegan
       };
 
       this.recipe = _recipe;

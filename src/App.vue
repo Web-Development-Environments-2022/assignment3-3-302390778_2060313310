@@ -3,7 +3,6 @@
     <div id="nav">
       <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
       <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
       <span v-if="!$root.store.username">
         Guest:
         <router-link :to="{ name: 'register' }">Register</router-link>|
@@ -14,13 +13,11 @@
       </span>
     </div>
     <router-view />
-    <MainPage></MainPage>
-    blablablakkkkkkkkk
   </div>
 </template>
 
 <script>
-import MainPage from "./pages/MainPage.vue"
+// import MainPage from "./pages/MainPage.vue"
 export default {
   name: "app",
   methods: {
@@ -34,7 +31,7 @@ export default {
     }
   },
   components: {
-    MainPage
+
   }
 };
 </script>
