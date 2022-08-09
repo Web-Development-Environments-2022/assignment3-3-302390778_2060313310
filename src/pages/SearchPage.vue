@@ -74,7 +74,7 @@
       </b-form-select>
     </div>
     <b-button @click="search">Search</b-button>
-    <RecipePreviewList v-if="show"
+    <RecipePreviewList id="result" v-if="show"
       :key="searchKey"
       title="Recipes that found"
       random="search"
@@ -83,8 +83,8 @@
       v-bind:searchIntol="selectedIntolerance"
       v-bind:searchDiet="selectedDiet"
       v-bind:searchSort="selectedSort"
-      v-bind:searchAmount="selectedAmount"           
-      ></RecipePreviewList>
+      v-bind:searchAmount="selectedAmount">
+    </RecipePreviewList>
   </div>
 </template>
 
@@ -123,11 +123,13 @@ import RecipePreviewList from "../components/RecipePreviewList";
   }
 </script>
 
-<!-- <style>
-#s{
-    height: 50px;
-    width: 50px;
+<style>
+#result{
+    /* align-self: center; */
+    align-content: center;
+    /* align-items: center; */
+    /* padding-top: 100px; */
 }
 
-</style> -->
+</style>
 

@@ -4,19 +4,24 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <div v-if="this.random == 'search'">
-        <b-col v-for="r in recipes" :key="r.id">
-          <div>
-            <RecipePreview class="recipePreview" :recipe="r" />
-          </div>
+    <div v-if="recipes.length <= 3">
+      <b-col v-for="r in recipes" :key="r.id">
+        <div>
+          <RecipePreview class="recipePreview" :recipe="r"/>
+        </div>
       </b-col>
     </div>
     <div v-else>
-      <b-row>
-        <b-col v-for="r in recipes" :key="r.id">
-          <RecipePreview class="recipePreview" :recipe="r" />
-        </b-col>
-      </b-row>
+      <b-col v-for="n in evens_numbers" :key="n">
+        <b-row>
+          <div>
+            <RecipePreview class="recipePreview" :recipe="recipes[n]"/>
+          </div>
+          <div v-if="(n + 1) < recipes.length">
+            <RecipePreview class="recipePreview" :recipe="recipes[n + 1]"/>
+          </div>
+        </b-row>
+      </b-col>
     </div>
   </b-container>
 </template>
@@ -125,6 +130,18 @@ export default {
         console.log(error);
       }
     }
+  },
+  computed:{
+    evens_numbers(){
+      var l = []
+      console.log(this.recipes.length)
+      for(var i=0;i<=this.recipes.length;i = i + 2){
+        console.log(i)
+        l.push(i)
+      }
+      console.log(l)
+      return l
+    }
   }
 };
 </script>
@@ -132,5 +149,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   min-height: 400px;
+}
+.recipePreview{
+  margin-inline: 50px;
 }
 </style>

@@ -109,7 +109,7 @@
         </b-form-invalid-feedback>
         <b-form-text v-else-if="$v.form.password.$error" text-variant="info">
           Your password should be <strong>strong</strong>. <br />
-          For that, your password should be also:
+          For that, your password should contain at least one number and one special char.
         </b-form-text>
         <b-form-invalid-feedback
           v-if="$v.form.password.required && !$v.form.password.length"
@@ -217,7 +217,15 @@ export default {
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        specialChar: function (value) {
+          const specialChar = /[!@#$%^&*]/.test(value);
+          return specialChar;
+        },
+        number: function (value) {
+          const number = /[0-9]/.test(value);
+          return number;
+        },
       },
       email:{
         required,
@@ -246,7 +254,7 @@ export default {
           "http://127.0.0.1:3000/register",
 
           {
-            username: this.form.username,
+            userName: this.form.username,
             firstName: this.form.firstname,
             lastName: this.form.lastname,
             country: this.form.country,

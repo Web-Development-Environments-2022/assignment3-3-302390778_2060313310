@@ -3,18 +3,29 @@
     <h1 class="title">Main Page</h1>
     <h2 v-if="!$root.store.username">Hello guest</h2>
     <h2 v-else>Hello {{ $root.store.username }}</h2>
-    <RecipePreviewList title="Random Recipes" random="true" class="RandomRecipes center"/>
-    <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-    <RecipePreviewList
-      title="Last Viewed Recipes"
-      random="false"
-      :class="{
-        RandomRecipes: true,
-        blur: !$root.store.username,
-        center: true
-      }"
-      disabled>
-    </RecipePreviewList>
+    <b-row>
+      <b-col>
+        <div>
+        <RecipePreviewList title="Random Recipes" random="true" class="RandomRecipes center"/>
+      </div>
+      </b-col>
+      <b-col>
+        <div>
+        <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
+        <RecipePreviewList
+          title="Last Viewed Recipes"
+          random="false"
+          :class="{
+            RandomRecipes: true,
+            blur: !$root.store.username,
+            center: true
+          }"
+          disabled>
+        </RecipePreviewList>
+      </div>
+      </b-col>
+    </b-row>
+    
     <!-- <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >
