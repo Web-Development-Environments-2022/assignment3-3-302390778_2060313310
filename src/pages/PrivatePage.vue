@@ -1,6 +1,19 @@
 <template>
   <div class="container">
-    <h1>Four Oh Four you didn't</h1>
-    <router-link to="/" exact>ET Go Home</router-link>
+    <h1>{{$root.store.username}} recipes</h1>
+    <b-button pill variant="outline-primary" :to="{ name: 'createNew' }">+ New Recipe</b-button>
+    <RecipePreviewList id="result"
+      random="private"
+      ref="rpl">
+    </RecipePreviewList>
   </div>
 </template>
+
+<script>
+  import RecipePreviewList from "../components/RecipePreviewList";
+  export default {
+    components: {
+      RecipePreviewList,
+    }
+  }
+</script>

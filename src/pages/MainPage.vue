@@ -5,15 +5,34 @@
     <h2 v-else>Hello {{ $root.store.username }}</h2>
     <b-row>
       <b-col>
-        <div>
-        <RecipePreviewList title="Random Recipes" random="true" class="RandomRecipes center"/>
-      </div>
+        <h2>
+          Random recipes
+        </h2>
       </b-col>
+      <b-col v-if="$root.store.username">
+        <h2>
+          Last viewed recipes
+        </h2>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col>
         <div>
-        <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
+          <RecipePreviewList random="true" class="RandomRecipes center" ref="rpl">
+            
+          </RecipePreviewList>
+          <b-button id="btn" pill variant="outline-primary" @click="changeRandoms()">More</b-button>
+        </div>
+        
+      </b-col>
+      <b-col>
+        <div v-if="!$root.store.username">
+          <br><br><br>
+          <LoginPageVue routNext="true"></LoginPageVue>
+        </div>
+      <div v-else>
+        <!-- <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link> -->
         <RecipePreviewList
-          title="Last Viewed Recipes"
           random="false"
           :class="{
             RandomRecipes: true,
@@ -36,12 +55,19 @@
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import LoginPageVue from "./LoginPage.vue";
 export default {
   components: {
-    RecipePreviewList
+    RecipePreviewList,
+    LoginPageVue
   },
   mounted(){
     // console.log(this.$root.store.login)
+  },
+  methods:{
+    changeRandoms(){
+      this.$refs.rpl.updateRecipes()
+    }
   }
 };
 </script>
@@ -57,5 +83,8 @@ export default {
 ::v-deep .blur .recipe-preview {
   pointer-events: none;
   cursor: default;
+}
+#btn{
+  margin-left: 180px;
 }
 </style>

@@ -11,13 +11,6 @@
         <b-form-select-option value="15">15</b-form-select-option>
       </b-form-select>
     </div>
-    <div id="search-sort">
-      <div class="mt-3">sort by: <strong>{{ selectedSort }}</strong></div>
-      <b-form-select v-model="selectedSort" class="mb-3">
-        <b-form-select-option value="popularity">Popularity</b-form-select-option>
-        <b-form-select-option value="ready in minutes">Ready in minutes</b-form-select-option>
-      </b-form-select>
-    </div>
     <div id="search-cuisine">
       <div class="mt-3">cuisine: <strong>{{ selectedCuisine }}</strong></div>
       <b-form-select v-model="selectedCuisine" class="mb-3">
@@ -74,16 +67,38 @@
       </b-form-select>
     </div>
     <b-button @click="search">Search</b-button>
-    <RecipePreviewList id="result" v-if="show"
+    <div id="sort">
+      <b-form-select v-model="sortBy" class="mb-3">
+        <b-form-select-option value="likes">Popularity</b-form-select-option>
+        <b-form-select-option value="time">Ready in minutes</b-form-select-option>
+      </b-form-select>
+    </div>
+    <b-button :disabled="sortBy==='' || !searchedBefore"  id="btn" pill variant="outline-primary" @click="sortRes">Sort</b-button> 
+      <div v-if="show">
+        <h2 v-show="isNoRes">
+          No match results
+        </h2>
+        <h2 v-show="!isNoRes">
+          Recipes that found:
+        </h2>
+        <h2 v-if="!show">
+          Last search 
+        </h2>
+      </div>
+    <RecipePreviewList id="result" v-if="show" v-on:recipes_length="recipes_len"
       :key="searchKey"
-      title="Recipes that found"
       random="search"
       v-bind:query="query"
       v-bind:searchCuisine="selectedCuisine"
       v-bind:searchIntol="selectedIntolerance"
       v-bind:searchDiet="selectedDiet"
       v-bind:searchSort="selectedSort"
-      v-bind:searchAmount="selectedAmount">
+      v-bind:searchAmount="selectedAmount"
+      ref="rpl">
+    </RecipePreviewList>
+    <RecipePreviewList id="result" v-else
+      random="lastSearch"
+      ref="rpl2">
     </RecipePreviewList>
   </div>
 </template>
@@ -97,6 +112,7 @@ import RecipePreviewList from "../components/RecipePreviewList";
     },
     data(){
       return{
+        // resTitle: "Recipes that found",
         query:"",
         show:false,
         searchKey:0,
@@ -104,22 +120,35 @@ import RecipePreviewList from "../components/RecipePreviewList";
         selectedIntolerance: '',
         selectedDiet: '',
         selectedCuisine: '',
-        selectedAmount: "5"
+        selectedAmount: "5",
+        sortBy: "",
+        searchedBefore: false,
+        isNoRes: true
         };
     },
     created(){
       this.show=false;
       this.query="";
       this.searchKey = 0;
+      this.noRes = true;
     },
     methods: {
     search() {
       if (this.query != ""){
         this.show=true;
         this.searchKey++;
+        this.searchedBefore = true;
       }
+    },
+    sortRes(){
+      if (this.sortBy != "" ){
+        this.$refs.rpl.sort(this.sortBy)
+      }
+    },
+    recipes_len(len){
+      this.isNoRes = (len == 0)
     }
-  }
+    }
   }
 </script>
 
@@ -129,6 +158,14 @@ import RecipePreviewList from "../components/RecipePreviewList";
     align-content: center;
     /* align-items: center; */
     /* padding-top: 100px; */
+}
+#sort{
+  width: 40%;
+  float: right;
+}
+#btn{
+  width: 8%;
+  float: right;
 }
 
 </style>

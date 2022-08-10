@@ -1,9 +1,5 @@
 <template>
   <b-container>
-    <h3>
-      {{ title }}:
-      <slot></slot>
-    </h3>
     <div v-if="recipes.length <= 3">
       <b-col v-for="r in recipes" :key="r.id">
         <div>
@@ -35,10 +31,6 @@ export default {
     RecipePreview
   },
   props: {
-    title: {
-      type: String,
-      required: true
-    },
     random:{
       type: String,
       required: true
@@ -73,18 +65,32 @@ export default {
       recipes: [],
       randomReq:"recipes/getRandomRecipes",
       lastWatchedReq:"users/threelastWatched",
-      searchRecipes:"recipes/searchForRecipe"
+      searchRecipes:"recipes/searchForRecipe",
+      favoriteRecipes:"users/getFavorites",
+      familyRecipes: "users/familyRecipes",
+      privateRecipes: "users/getUserRecipe",
+      lastSearch: "users/lastSearch"
     };
   },
-  mounted() {
-    this.updateRecipes();
-    // this.searchAmount = 5
-    // this.searchCuisine = ""
-    // this.searchDiet = ""
-    // this.searchIntol = ""
-    // this.searchSort = null
+  async mounted() {
+    await this.updateRecipes();
+    this.$emit('recipes_length',this.recipes.length)
   },
   methods: {
+    getLen(){
+      return this.recipes.length
+    },
+    sort(by){
+      console.log(by)
+      if(by == "likes"){
+        this.recipes = this.recipes.sort((a, b) => (a.aggregateLikes > b.aggregateLikes)? -1 : 1)
+      }
+      else{
+        this.recipes = this.recipes.sort((a, b) => (a.readyInMinutes > b.readyInMinutes)? 1 : -1)
+      }
+      console.log(this.recipes)
+    },
+
     async updateRecipes() {
       try {
         // if(this.random=="search" && this.query==""){return}
@@ -92,12 +98,14 @@ export default {
         let url = "http://127.0.0.1:3000/"
         if(this.random== "true"){url += this.randomReq;}
         else if(this.random == "search"){url += this.searchRecipes;}
+        else if(this.random == "favorite"){url += this.favoriteRecipes;}
+        else if(this.random == "family"){url += this.familyRecipes;}
+        else if(this.random == "private"){url += this.privateRecipes;}
+        else if(this.random == "lastSearch"){url += this.lastSearch;}
         else{url+= this.lastWatchedReq;}
         if (this.random != "search"){
           response = await this.axios.get(
-            // this.$root.store.state.server_domain + "/recipes/getRandomRecipes",
-            url
-            // "https://test-for-3-2.herokuapp.com/recipes/random"
+            url,{ withCredentials: true }
           );
         }
         else{
@@ -114,32 +122,37 @@ export default {
                 }}
           );
         }
-        console.log(response)
         if(response == null){
           this.recipes = [];
           return
         }
+        if (this.random == "lastSearch" && response.data.length > 0){
+          response = await this.axios.get(
+            "http://127.0.0.1:3000/recipes/searchForRecipe",
+            {
+              params:{
+                query:response.data[0],
+                }}
+          );
+        }
         const d = response.data;
         let recipes;
-        if(this.random == "true" || this.random == "search"){recipes = d.message}
+        if(this.random == "true" || this.random == "search" || this.random == "lastSearch"){recipes = d.message}
         else{recipes=d}
         this.recipes = [];
         this.recipes.push(...recipes);
-        // console.log(this.recipes);
       } catch (error) {
         console.log(error);
+        // console.log(response);
       }
     }
   },
   computed:{
     evens_numbers(){
       var l = []
-      console.log(this.recipes.length)
       for(var i=0;i<=this.recipes.length;i = i + 2){
-        console.log(i)
         l.push(i)
       }
-      console.log(l)
       return l
     }
   }

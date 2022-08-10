@@ -67,6 +67,13 @@
 import { required } from "vuelidate/lib/validators";
 export default {
   name: "Login",
+  props:{
+    routNext: {
+      type: String,
+      required: false
+    }
+    
+  },
   data() {
     return {
       form: {
@@ -96,7 +103,7 @@ export default {
         
         const response = await this.axios.post(
           // "https://test-for-3-2.herokuapp.com/user/Login",
-          "http://127.0.0.1:3000/login",
+          "http://127.0.0.1:3000/login",          
           // "http://132.72.65.211:80/Login",
           // "http://132.73.84.100:80/Login",
 
@@ -109,7 +116,9 @@ export default {
         // this.$root.loggedIn = true;
         console.log(this.$root.store.login);
         this.$root.store.login(this.form.username);
-        this.$router.push("/");
+        if(typeof this.routNext === 'undefined'){
+          this.$router.push("/");
+        }        
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;

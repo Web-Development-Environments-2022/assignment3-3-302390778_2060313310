@@ -2,10 +2,11 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueAxios from "vue-axios";
 import axios from "axios";
-
+import VueCookies from "vue-cookies";
 import routes from "./routes";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
+Vue.use(VueCookies);
 const router = new VueRouter({
   routes,
 });
@@ -103,3 +104,5 @@ new Vue({
   },
   render: (h) => h(App),
 }).$mount("#app");
+// axios.defaults.withCredentials = true;
+

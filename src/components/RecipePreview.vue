@@ -15,6 +15,10 @@
       <li v-if="recipe.vegan" class="list-group-item">vegan</li>
       <li v-if="recipe.vegetarian" class="list-group-item">vegetarian</li>
       <li v-if="recipe.glutenFree" class="list-group-item">gluten Free</li>
+      <li v-if="recipe.wasWatchedByUserBefore" class="list-group-item">Watch by user before</li>
+      <li v-else class="list-group-item">User have never watched</li>
+      <li v-if="recipe.wasSavedByUser" class="list-group-item">Saved by user</li>
+      <li v-else class="list-group-item"><b-button pill variant="outline-primary" @click="saveRecipe(recipe.id)">Save recipe</b-button></li>
     </ul>
     <!-- <div class="card-body">
       <a href="#" class="card-link">Card link</a>
@@ -71,30 +75,17 @@ export default {
       type: Object,
       required: true
     }
-
-    // id: {
-    //   type: Number,
-    //   required: true
-    // },
-    // title: {
-    //   type: String,
-    //   required: true
-    // },
-    // readyInMinutes: {
-    //   type: Number,
-    //   required: true
-    // },
-    // image: {
-    //   type: String,
-    //   required: true
-    // },
-    // aggregateLikes: {
-    //   type: Number,
-    //   required: false,
-    //   default() {
-    //     return undefined;
-    //   }
-    // }
+  },
+  methods:{
+    async saveRecipe(recipe_id){
+      response = await this.axios.post(
+            "http://127.0.0.1:3000//addFavorites",{ withCredentials: true },
+            {
+              params:{
+                recipeId:recipe_id
+                }}
+          );
+    }
   }
 };
 </script>

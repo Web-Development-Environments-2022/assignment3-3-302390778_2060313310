@@ -1,17 +1,17 @@
 <template>
   <div class="container">
     <div v-if="recipe">
-      <div class="recipe-header mt-3 mb-4">
-        <h1>{{ recipe.title }}</h1>
-        <!-- <img :src="recipe.image" class="center" /> -->
-        <img :src="recipe.image" class="center" />
+      <div>
+        <h1 id="title">{{ recipe.title }}</h1>
+        <img :src="recipe.image" class="center"/>
       </div>
       <div class="recipe-body">
         <div class="wrapper">
-          <div class="wrapped">
+          <div class="center">
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }}</div>
+              <div>Popularity: {{ recipe.aggregateLikes }} likes</div>
+              <div>Servings: {{ recipe.servings }} meals</div>
               <div v-if="recipe.vegan">
                 vegan
               </div>
@@ -31,8 +31,6 @@
                 {{ r.original }}
               </li>
             </ul>
-          </div>
-          <div class="wrapped">
             Instructions:
             <ol>
               <li v-for="s in recipe._instructions" :key="s.number">
@@ -40,6 +38,7 @@
               </li>
               <!-- {{ recipe.instructions }} -->
             </ol>
+            <b-button pill variant="outline-primary" @click="saveRecipe(recipe.id)">Save recipe</b-button>
           </div>
         </div>
       </div>
@@ -64,6 +63,17 @@ export default {
       recipe: null
       // image_load: false
     };
+  },
+  methods:{
+    async saveRecipe(recipe_id){
+      response = await this.axios.post(
+            "http://127.0.0.1:3000//addFavorites",{ withCredentials: true },
+            {
+              params:{
+                recipeId:recipe_id
+                }}
+          );
+    }
   },
   async created() {
     try {
@@ -95,7 +105,8 @@ export default {
         title,
         glutenFree,
         vegetarian,
-        vegan
+        vegan,
+        servings
       } = response.data.message;
             console.log(response.data.message)
 
@@ -117,7 +128,8 @@ export default {
         title,
         glutenFree,
         vegetarian,
-        vegan
+        vegan,
+        servings
       };
 
       this.recipe = _recipe;
@@ -132,16 +144,10 @@ export default {
 .wrapper {
   display: flex;
 }
-.wrapped {
-  width: 50%;
-}
 .center {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
 }
-/* .recipe-header{
-
-} */
 </style>
