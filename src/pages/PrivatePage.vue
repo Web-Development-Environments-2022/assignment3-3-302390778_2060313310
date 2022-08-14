@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>{{$root.store.username}} recipes</h1>
-    <b-button pill variant="outline-primary" :to="{ name: 'createNew' }">+ New Recipe</b-button>
+    <createRecipeModel></createRecipeModel>
     <RecipePreviewList id="result"
       random="private"
       ref="rpl">
@@ -11,9 +11,11 @@
 
 <script>
   import RecipePreviewList from "../components/RecipePreviewList";
+  import createRecipeModel from "../components/createRecipeModel"
   export default {
     components: {
       RecipePreviewList,
+      createRecipeModel
     }
   }
 </script>

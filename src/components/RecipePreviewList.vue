@@ -1,15 +1,15 @@
 <template>
   <b-container>
     <div v-if="recipes.length <= 3">
-      <b-col v-for="r in recipes" :key="r.id">
+      <b-col v-for="r in recipes" :key="r.id" md="5">
         <div>
           <RecipePreview class="recipePreview" :recipe="r"/>
         </div>
       </b-col>
     </div>
     <div v-else>
-      <b-col v-for="n in evens_numbers" :key="n">
-        <b-row>
+      <b-col v-for="n in evens_numbers" :key="n" md="5">
+        <b-row md="5">
           <div>
             <RecipePreview class="recipePreview" :recipe="recipes[n]"/>
           </div>
@@ -95,7 +95,7 @@ export default {
       try {
         // if(this.random=="search" && this.query==""){return}
         let response
-        let url = "http://127.0.0.1:3000/"
+        let url = "https://wikirecipe.cs.bgu.ac.il/"
         if(this.random== "true"){url += this.randomReq;}
         else if(this.random == "search"){url += this.searchRecipes;}
         else if(this.random == "favorite"){url += this.favoriteRecipes;}
@@ -128,7 +128,7 @@ export default {
         }
         if (this.random == "lastSearch" && response.data.length > 0){
           response = await this.axios.get(
-            "http://127.0.0.1:3000/recipes/searchForRecipe",
+            "https://wikirecipe.cs.bgu.ac.il/recipes/searchForRecipe",
             {
               params:{
                 query:response.data[0],
@@ -141,6 +141,9 @@ export default {
         else{recipes=d}
         this.recipes = [];
         this.recipes.push(...recipes);
+        if(this.random == "private"){
+          console.log(this.recipes)
+        }
       } catch (error) {
         console.log(error);
         // console.log(response);

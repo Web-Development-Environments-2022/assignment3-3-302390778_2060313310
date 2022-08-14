@@ -1,8 +1,11 @@
 <template>
   <div id="app">
-      <div id="nav">
-        <b-row>
+      <div id="nav" style="background-color:aliceblue;border-bottom: 1px solid lightblue;box-shadow: 0px 0px 20px #888888;">
+        <b-row
+        align-v="stretch"
+        style="font-size: 1.85rem;">
           <b-col>
+            <!-- <img src="\assets\serving.png" width="70px" height="70px"> -->
             Logo
           </b-col>
           <b-col>
@@ -56,7 +59,6 @@ export default {
 
 <style lang="scss">
 @import "@/scss/form-style.scss";
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -67,15 +69,16 @@ export default {
 
 #nav {
   padding: 30px;
+  margin-bottom: 10px;
 }
 
 #nav a {
   font-weight: bold;
+  
   color: #2c3e50;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+   color: #3abead;
 }
-
 </style>

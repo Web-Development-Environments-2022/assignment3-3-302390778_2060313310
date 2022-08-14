@@ -1,13 +1,7 @@
 <template>
   <div class="container">
     <div v-if="recipe">
-      <b-row>
-        <b-col md="12"><h1>{{recipe.title}}</h1></b-col>
-        <b-col md="3">
-          <b-button id="unsave" v-if="recipe.wasSavedByUser" @click="saveRecipe(recipe.id)" style="float:right;">Saved</b-button>
-          <b-button id="save" v-else pill variant="secondary" style="float:right;">Save</b-button>
-        </b-col>
-        </b-row>
+    <h1>{{recipe.title}}</h1>
       <img :src="recipe.image" class="center" style="border-radius:15px;border: 1px solid blue;"/>
       <div class="recipe-body">
         <div class="wrapper">
@@ -34,11 +28,7 @@
             <br><br>
             <h5><strong>Instructions:</strong></h5>
             <ul class="list-group" style="line-height:160%">
-              <li class="li-instruction" v-for="s in recipe._instructions" :key="s.number">
-                <span class="badge">{{s.number}}</span>
-                <br>
-                <p>{{s.step}}<br></p>
-              </li>
+                <span>{{recipe.instructions}}</span>
             </ul>
           </div>
         </div>
@@ -67,7 +57,7 @@ export default {
       let response;
       try {
         response = await this.axios.get(
-          "https://wikirecipe.cs.bgu.ac.il/recipes/getRecipeFromClick",
+          "https://wikirecipe.cs.bgu.ac.il/users/getLocalRecipeFromClick",
           {
             params: { recipeId: this.$route.params.recipeId }
           }
@@ -79,7 +69,6 @@ export default {
         return;
       }
       let {
-        analyzedInstructions,
         instructions,
         extendedIngredients,
         aggregateLikes,
@@ -90,20 +79,11 @@ export default {
         vegetarian,
         vegan,
         servings
-      } = response.data.message;
+        } = response.data.message;
             console.log(response.data.message)
-
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
 
       let _recipe = {
         instructions,
-        _instructions,
-        analyzedInstructions,
         extendedIngredients,
         aggregateLikes,
         readyInMinutes,

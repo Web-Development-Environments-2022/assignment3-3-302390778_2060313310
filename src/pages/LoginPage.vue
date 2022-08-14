@@ -41,8 +41,9 @@
         variant="primary"
         style="width:100px;display:block;"
         class="mx-auto w-100"
-        >Login</b-button
+        :disabled="form.username==='' || form.password===''">Login</b-button
       >
+      <!-- TODO: init username and password every page load -->
       <div class="mt-2">
         Do not have an account yet?
         <router-link to="register"> Register in here</router-link>
@@ -103,7 +104,7 @@ export default {
         
         const response = await this.axios.post(
           // "https://test-for-3-2.herokuapp.com/user/Login",
-          "http://127.0.0.1:3000/login",          
+          "https://wikirecipe.cs.bgu.ac.il/login",          
           // "http://132.72.65.211:80/Login",
           // "http://132.73.84.100:80/Login",
 
@@ -118,7 +119,7 @@ export default {
         this.$root.store.login(this.form.username);
         if(typeof this.routNext === 'undefined'){
           this.$router.push("/");
-        }        
+        }       
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;

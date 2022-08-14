@@ -21,7 +21,7 @@
           <RecipePreviewList random="true" class="RandomRecipes center" ref="rpl">
             
           </RecipePreviewList>
-          <b-button id="btn" pill variant="outline-primary" @click="changeRandoms()">More</b-button>
+          <b-button id="btn" variant="outline-secondary" @click="changeRandoms()"><strong>More</strong></b-button>
         </div>
         
       </b-col>
@@ -86,5 +86,7 @@ export default {
 }
 #btn{
   margin-left: 180px;
+  padding: 16px 32px;
+  font-size: large;
 }
 </style>

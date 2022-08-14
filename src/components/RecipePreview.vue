@@ -1,73 +1,47 @@
 <template>
   <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-  >
-  <!-- try 1 -->
-  <div class="card" style="width: 18rem;">
-    <img v-if="image_load" :src="recipe.image" class="recipe-image">
-    <div class="card-body">
-      <h5 :title="recipe.title" class="recipe-title" >{{recipe.title}}</h5>
+    :to="{ name: routeName, params: { recipeId: recipe.id } }"
+    class="recipe-preview">
+    <div class="card" style="width: 20rem;" id="mb-3">
+      <img v-if="image_load" :src="recipe.image" class="recipe-image">
+      <div class="card-body">
+        <h8 v-if="!recipe.wasWatchedByUserBefore" :title="recipe.title" class="recipe-title"><strong>{{recipe.title}}</strong></h8>
+        <h8 v-else class="wachtedRecipe" :title="recipe.title" style="color:blueviolet"><strong>{{recipe.title}}</strong></h8>
+        &nbsp;
+        <b-button id="unsave" v-if="recipe.wasSavedByUser" @click="saveRecipe(recipe.id)">unSave</b-button>
+        <b-button id="save" v-else pill variant="secondary" @click="saveRecipe(recipe.id)">Save</b-button>
+
+      </div>
+      <ul class="list-group list-group-flush">
+        <li id="infoData" class="list-group-item" >
+          <img src="..\assets\heart-icon.png" width="20px" height="20px">
+          {{ recipe.aggregateLikes }} likes |
+          <img src="..\assets\timer.png" width="25px" height="20px">
+          {{ recipe.readyInMinutes }} minutes 
+        </li>
+        <li class="list-group-item" v-if="recipe.vegan || recipe.glutenFree || recipe.vegetarian">
+          <b-button class="infoBtn" variant="info" v-if="recipe.vegetarian">vegetarian</b-button>
+          <b-button class="infoBtn" variant="info" v-if="recipe.vegan">vegan</b-button>
+          <b-button class="infoBtn" variant="info" v-if="recipe.glutenFree">gluten free</b-button>
+        </li>
+      </ul>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">{{ recipe.readyInMinutes }} minutes</li>
-      <li class="list-group-item">{{ recipe.aggregateLikes }} likes</li>
-      <li v-if="recipe.vegan" class="list-group-item">vegan</li>
-      <li v-if="recipe.vegetarian" class="list-group-item">vegetarian</li>
-      <li v-if="recipe.glutenFree" class="list-group-item">gluten Free</li>
-      <li v-if="recipe.wasWatchedByUserBefore" class="list-group-item">Watch by user before</li>
-      <li v-else class="list-group-item">User have never watched</li>
-      <li v-if="recipe.wasSavedByUser" class="list-group-item">Saved by user</li>
-      <li v-else class="list-group-item"><b-button pill variant="outline-primary" @click="saveRecipe(recipe.id)">Save recipe</b-button></li>
-    </ul>
-    <!-- <div class="card-body">
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
-    </div> -->
-  </div>
-  <!--  -->
-  <!-- <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
-  </div>
-  <br>
-  <div class="recipe-footer">
-    <div :title="recipe.title" class="recipe-title">
-      <div v-if="recipe.wasWatchedByUserBefore">
-        <div id="wachtedRecipe">
-          {{ recipe.title }}
-        </div>
-      </div>
-      <div v-else>
-        {{ recipe.title }}
-      </div>
-    </div>
-    <ul class="recipe-overview">
-      <li>{{ recipe.readyInMinutes }} minutes</li>
-      <li>{{ recipe.aggregateLikes }} likes</li>
-      <div v-if="recipe.vegan">
-      <li>vegan</li>
-      </div>
-      <div v-if="recipe.vegetarian">
-      <li>vegetarian</li>
-      </div>
-      <div v-if="recipe.glutenFree">
-      <li>gluten Free</li>
-      </div>
-    </ul>
-  </div> -->
   </router-link>
 </template>
 
 <script>
 export default {
   mounted() {
+    if(this.recipe.image===undefined || !this.recipe.image){
+      this.recipe.image = 'https://media.istockphoto.com/photos/baby-making-dough-for-baking-picture-id125141936'
+    }
     this.axios.get(this.recipe.image).then((i) => {
       this.image_load = true;
     });
   },
   data() {
     return {
-      image_load: false
+      image_load: false,
     };
   },
   props: {
@@ -78,13 +52,23 @@ export default {
   },
   methods:{
     async saveRecipe(recipe_id){
+      let response;
+      try{
       response = await this.axios.post(
-            "http://127.0.0.1:3000//addFavorites",{ withCredentials: true },
+            "https://wikirecipe.cs.bgu.ac.il/users/addFavorites",
             {
-              params:{
-                recipeId:recipe_id
-                }}
+              recipeId:recipe_id
+            },
+            { withCredentials: true }
           );
+    }
+    catch(err){console.log(err)}
+  }
+  },
+  computed:{
+    routeName(){
+      if(this.recipe.private){return 'userRecipe'}
+      return 'recipe'
     }
   }
 };
@@ -93,18 +77,18 @@ export default {
 <style scoped>
 .recipe-preview {
   display: inline-block;
-  width: 90%;
+  width: 100%;
   height: 100%;
   position: relative;
   margin: 10px 10px;
 }
-.recipe-preview > .recipe-body {
+/* .recipe-preview > .recipe-body {
   width: 100%;
   height: 200px;
   position: relative;
-}
+} */
 
-.recipe-preview .recipe-body .recipe-image {
+.recipe-preview .recipe-body #recipe-image {
   margin-left: auto;
   margin-right: auto;
   margin-top: 1000px;
@@ -120,10 +104,9 @@ export default {
 .recipe-preview .recipe-footer {
   width: 100%;
   height: 50%;
-  overflow: hidden;
 }
 
-.recipe-preview .recipe-footer .recipe-title {
+/* .recipe-preview .recipe-footer .recipe-title {
   padding: 10px 10px;
   width: 100%;
   font-size: 12pt;
@@ -132,9 +115,9 @@ export default {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-}
+} */
 
-.recipe-preview .recipe-footer ul.recipe-overview {
+/* .recipe-preview .recipe-footer ul.recipe-overview {
   padding: 5px 10px;
   width: 100%;
   display: -webkit-box;
@@ -151,8 +134,8 @@ export default {
   flex: 1 auto;
   table-layout: fixed;
   margin-bottom: 0px;
-}
-
+} */
+/* 
 .recipe-preview .recipe-footer ul.recipe-overview li {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
@@ -164,8 +147,73 @@ export default {
   width: 20px;
   display: table-cell;
   text-align: center;
-}
+} */
 #wachtedRecipe{
-  color: blueviolet;
+  color: rgb(58, 2, 109);
+}
+
+#mb-3:hover {
+  filter: brightness(95%);
+}
+#save{
+  border-radius: 50px;
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  float: right;
+}
+#save:hover {
+  background-color: #555555;
+  color: white;
+}
+#unsave{
+  border-radius: 50px;
+  border: none;
+  color: white;
+  padding: 5px 15;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  background-color:  black;
+  border: 2px solid #555555;
+  float: right;
+}
+#unsave:hover {
+  background-color:white;
+  color: #555555;
+}
+
+.infoBtn{
+  border-radius: 50px;
+  border: none;
+  color: white;
+  padding: 3px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  background-color:#008CBA;
+  color: rgb(255, 255, 255);
+  border: 2px solid #a6dbf6;
+}
+.card{
+  background-color: rgb(254, 246, 235);
+}
+#infoData{
+  background-color: rgb(255, 250, 244);
 }
 </style>
