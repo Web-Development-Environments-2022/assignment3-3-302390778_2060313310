@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="title">Main Page</h1>
-    <h2 v-if="!$root.store.username">Hello guest</h2>
-    <h2 v-else>Hello {{ $root.store.username }}</h2>
+    <div align="center"><h1 class="title"><strong>Main Page</strong></h1></div>
     <b-row>
       <b-col>
         <h2>

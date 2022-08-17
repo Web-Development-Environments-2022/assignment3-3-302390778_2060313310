@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1>{{$root.store.username}} recipes</h1>
+  <div class="container" align="center">
+    <h1><strong>{{$root.store.username}}'s recipes</strong></h1>
     <createRecipeModel></createRecipeModel>
     <RecipePreviewList id="result"
       random="private"

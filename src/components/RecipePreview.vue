@@ -8,8 +8,10 @@
         <h8 v-if="!recipe.wasWatchedByUserBefore" :title="recipe.title" class="recipe-title"><strong>{{recipe.title}}</strong></h8>
         <h8 v-else class="wachtedRecipe" :title="recipe.title" style="color:blueviolet"><strong>{{recipe.title}}</strong></h8>
         &nbsp;
-        <b-button id="unsave" v-if="recipe.wasSavedByUser" @click="saveRecipe(recipe.id)">unSave</b-button>
-        <b-button id="save" v-else pill variant="secondary" @click="saveRecipe(recipe.id)">Save</b-button>
+        <div v-if="$root.store.username">
+          <b-button id="unsave" v-if="recipe.wasSavedByUser">saved</b-button>
+          <b-button id="save" v-else pill variant="secondary" @click="saveRecipe(recipe.id)">Save</b-button>
+        </div>
 
       </div>
       <ul class="list-group list-group-flush">
@@ -190,10 +192,7 @@ export default {
   border: 2px solid #555555;
   float: right;
 }
-#unsave:hover {
-  background-color:white;
-  color: #555555;
-}
+
 
 .infoBtn{
   border-radius: 50px;

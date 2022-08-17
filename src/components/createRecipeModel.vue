@@ -1,7 +1,7 @@
 <template>
   <div class="inline">
     <b-button pill v-b-modal="'my-modal'" variant="outline-primary">+ New Recipe</b-button>
-    <b-modal id="my-modal" @ok="handleOk" @show="handleReset" @hidden="handleReset">
+    <b-modal v-if="notSubmit" id="my-modal" @ok="handleOk" @show="handleReset" @hidden="handleReset">
       <b-form @submit.prevent="handleOk" @reset.prevent="handleReset">
         <b-form-group
           label-cols-sm="3"
@@ -14,7 +14,7 @@
             :state="validateState('formTitle')"
           >
           </b-form-input>
-          <b-form-invalid-feedback v-if="$v.form.formTitle.required">
+          <b-form-invalid-feedback v-if="!$v.form.formTitle.required">
             insert title
           </b-form-invalid-feedback>
         </b-form-group>
@@ -109,7 +109,7 @@
           label="Serving:"
         >
             <b-form-select
-                v-model="serving"
+                v-model="form.serving"
                 :options="variants"
                 ></b-form-select>
         </b-form-group>
@@ -141,16 +141,17 @@ export default {
     return {
       variants: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
       form: {
-        title: "",
+        formTitle: "",
         image: "",
         time: "",
         ingredients: "",
         instructions: "",
-        serving: "",
+        serving:""
       },
       vegan: "false",
       vegetarian: "false",
       gFree: "false",
+      notSubmit:"true"
     };
   },
   validations: {
@@ -190,9 +191,9 @@ export default {
     async CreateNewRecipe() {
       try {
         const response = await this.axios.post(
-          "http://wikirecipe.cs.bgu.ac.il/users/addUserRecipe",
+          "https://wikirecipe.cs.bgu.ac.il/users/addUserRecipe",
           {
-            title: this.form.title,
+            title: this.form.formTitle,
             image: this.form.image,
             readyInMinutes: this.form.time,
             extendedIngredients: this.form.ingredients,
@@ -210,24 +211,25 @@ export default {
       }
     },
     handleOk(bvModalEvent) {
-    //   this.$v.form.$touch();
-    //   bvModalEvent.preventDefault()
-    //   if (this.$v.form.$anyError) {
-        
-    //     return;
-    //   }
+      this.$v.form.$touch();
+      bvModalEvent.preventDefault()
+      if (this.form.formTitle == "" || this.form.time == "" || this.form.ingredients == "" || this.form.instructions == "" || this.form.serving == "") {
+        return;
+      }
+      // this.$v.form.clo
       this.CreateNewRecipe();
+      this.notSubmit = false
     },
     handleReset() {
       this.form = {
-        title: "",
+        formTitle: "",
         image: "",
         time: "",
         ingredients: "",
         instructions: "",
         serving: "",
       };
-      console.log(this.form)
+      // console.log(this.form)
       this.$nextTick(() => {
         this.$v.$reset();
       });

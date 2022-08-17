@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="title">Login</h1>
-    <b-form @submit.prevent="onLogin">
+    <b-form @submit="onLogin">
       <b-form-group
         id="input-group-Username"
         label-cols-sm="3"

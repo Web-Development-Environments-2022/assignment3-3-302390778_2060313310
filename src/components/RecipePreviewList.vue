@@ -110,38 +110,43 @@ export default {
         }
         else{
           console.log(this.searchAmount)
-            response = await this.axios.get(
-            url,
-            {
-              params:{
-                query:this.query,
-                cuisine: this.searchCuisine,
-                intolerances: this.searchIntol,
-                diet: this.searchDiet,
-                amount: this.searchAmount
-                }}
+          response = await this.axios.get(
+          url,
+          {
+            params:{
+              query:this.query,
+              cuisine: this.searchCuisine,
+              intolerances: this.searchIntol,
+              diet: this.searchDiet,
+              amount: this.searchAmount
+              }}
           );
         }
         if(response == null){
           this.recipes = [];
           return
         }
+        console.log("response amount")
+        // console.log( response)
+        console.log( response.data)
         if (this.random == "lastSearch" && response.data.length > 0){
           response = await this.axios.get(
             "https://wikirecipe.cs.bgu.ac.il/recipes/searchForRecipe",
             {
               params:{
                 query:response.data[0],
+                amount:5
                 }}
           );
         }
+        console.log(response)
         const d = response.data;
         let recipes;
         if(this.random == "true" || this.random == "search" || this.random == "lastSearch"){recipes = d.message}
         else{recipes=d}
         this.recipes = [];
         this.recipes.push(...recipes);
-        if(this.random == "private"){
+        if(this.random == "search"){
           console.log(this.recipes)
         }
       } catch (error) {

@@ -1,13 +1,7 @@
 <template>
   <div class="container">
     <div v-if="recipe">
-      <b-row>
         <b-col md="12"><h1>{{recipe.title}}</h1></b-col>
-        <b-col md="3">
-          <b-button id="unsave" v-if="recipe.wasSavedByUser" @click="saveRecipe(recipe.id)" style="float:right;">Saved</b-button>
-          <b-button id="save" v-else pill variant="secondary" style="float:right;">Save</b-button>
-        </b-col>
-        </b-row>
       <img :src="recipe.image" class="center" style="border-radius:15px;border: 1px solid blue;"/>
       <div class="recipe-body">
         <div class="wrapper">
@@ -53,14 +47,6 @@ export default {
     return {
       recipe: null
     };
-  },
-  methods:{
-    async saveRecipe(recipe_id){
-      response = await this.axios.post(
-            this.$root.store.server_domain+"/addFavorites",{ withCredentials: true },
-            {params:{recipeId:recipe_id}}
-          );
-    }
   },
   async created() {
     try {
@@ -231,8 +217,5 @@ p {
   border: 2px solid #555555;
   float: right;
 }
-#unsave:hover {
-  background-color:white;
-  color: #555555;
-}
+
 </style>

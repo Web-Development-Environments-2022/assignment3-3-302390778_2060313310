@@ -5,8 +5,8 @@
         align-v="stretch"
         style="font-size: 1.85rem;">
           <b-col>
-            <!-- <img src="\assets\serving.png" width="70px" height="70px"> -->
-            Logo
+            <img src="https://flyclipart.com/thumb2/fork-and-knife-transparent-png-pictures-910116.png" width="84" height="51">
+            <!-- Logo -->
           </b-col>
           <b-col>
             <router-link :to="{ name: 'main' }">Home</router-link>
@@ -18,16 +18,20 @@
             <router-link :to="{ name: 'about' }">About</router-link>
           </b-col>
           <b-col>
+            <div v-if="!$root.store.username">Hello guest</div>
+            <div v-else>Hello {{$root.store.username}}</div>
+          </b-col>
+          <b-col>
             <router-link :to="{ name: 'register' }" v-if="!$root.store.username">Register</router-link> 
           </b-col>
           <b-col>
             <router-link :to="{ name: 'login' }" v-if="!$root.store.username">Login</router-link>
           </b-col>
           <b-col>
-            <button @click="Logout" :disabled="!$root.store.username">Logout</button> 
+            <b-button variant="outline-secondary" class="btn" @click="Logout" :disabled="!$root.store.username">Logout</b-button> 
           </b-col>
           <div>
-            <b-dropdown v-if="$root.store.username" id="dropdown-1" text="Private zone" class="drop-down">
+            <b-dropdown v-if="$root.store.username" id="dropdown-1" text="Private Zone" class="drop-down">
             <!-- TODO: need to handle the rights links -->
              <b-dropdown-item :to="{ name: 'favorite' }">Favorites rcipes</b-dropdown-item>
             <b-dropdown-item :to="{ name: 'private' }">Private rcipes</b-dropdown-item>

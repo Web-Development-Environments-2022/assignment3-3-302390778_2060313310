@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1>Favorites recipes</h1>
+  <div class="container" align="center">
+    <h1><strong>{{$root.store.username}}'s Favorites recipes</strong></h1>
       <RecipePreviewList id="result" 
       random="favorite"
       ref="rpl">

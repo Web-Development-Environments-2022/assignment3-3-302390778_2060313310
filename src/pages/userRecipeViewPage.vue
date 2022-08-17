@@ -15,16 +15,12 @@
                 <img src="..\assets\serving.png" width="30px" height="30px">
                 {{ recipe.servings }} meals
               </div>
-              <b-button class="infoBtn" variant="info" v-if="recipe.vegetarian">vegetarian</b-button>
-              <b-button class="infoBtn" variant="info" v-if="recipe.vegan">vegan</b-button>
-              <b-button class="infoBtn" variant="info" v-if="recipe.glutenFree">gluten free</b-button>
+              <b-button class="infoBtn" variant="info" v-if="recipe.vegetarian == check">vegetarian</b-button>
+              <b-button class="infoBtn" variant="info" v-if="recipe.vegan == check">vegan</b-button>
+              <b-button class="infoBtn" variant="info" v-if="recipe.glutenFree == check">gluten free</b-button>
             </div>
-            <table>
-              <th>Ingredients:</th>
-              <tr v-for="(r, index) in recipe.extendedIngredients" :key="index + '_' + r.id">
-                <td><li>{{r.original}}</li></td>
-              </tr>
-            </table>
+              <h5><strong>Ingredients:</strong></h5>
+              <li>{{recipe.extendedIngredients}}</li>
             <br><br>
             <h5><strong>Instructions:</strong></h5>
             <ul class="list-group" style="line-height:160%">
@@ -41,7 +37,8 @@
 export default {
   data() {
     return {
-      recipe: null
+      recipe: null,
+      check:"true"
     };
   },
   methods:{
